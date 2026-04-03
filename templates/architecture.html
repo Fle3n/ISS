@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Архитектура · {{ mission_title }}{% endblock %}
+
+{% block content %}
+<main class="story-page">
+  <section class="simple-hero simple-hero--single">
+    <article class="simple-hero-copy">
+      <p class="page-eyebrow">Architecture / Open Data</p>
+      <h1>Как устроен многостраничный веб-прототип</h1>
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">Что описано на этой странице</span>
+            <span class="fold-hint">Стек, слои, модели, источники данных</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>
+            Страница фиксирует технический стек, логику взаимодействия слоёв и
+            открытые источники данных, которые можно указать в защите проекта.
+          </p>
+        </div>
+      </details>
+    </article>
+  </section>
+
+  <section class="fold-page-grid">
+    <div class="fold-stack">
+      {% for layer in layers %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">{{ layer.layer }}</span>
+            <span class="fold-hint">{{ layer.stack }}</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>{{ layer.details }}</p>
+        </div>
+      </details>
+      {% endfor %}
+    </div>
+
+    <div class="fold-stack">
+        {% for module in tech_modules %}
+        <details class="fold-card">
+          <summary>
+            <div class="fold-copy">
+              <span class="fold-title">{{ module.name }}</span>
+              <span class="fold-hint">Simulation module</span>
+            </div>
+            <span class="fold-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="fold-body">
+            <p>{{ module.summary }}</p>
+          </div>
+        </details>
+        {% endfor %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">Источники и TLE-референс</span>
+            <span class="fold-hint">NASA, CelesTrak, публичные справочники</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <div class="source-list">
+        {% for source in mission_profile.openDataSources %}
+            <a class="source-link" href="{{ source.url }}" target="_blank" rel="noreferrer">
+              <strong>{{ source.name }}</strong>
+              <span>{{ source.usage }}</span>
+            </a>
+        {% endfor %}
+          </div>
+          <div class="tle-block">
+            <p>{{ mission_profile.orbitReference.label }}</p>
+            <code>{{ mission_profile.orbitReference.tleSample[0] }}</code>
+            <code>{{ mission_profile.orbitReference.tleSample[1] }}</code>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+{% endblock %}

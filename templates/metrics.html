@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Метрики · {{ mission_title }}{% endblock %}
+
+{% block content %}
+<main class="story-page">
+  <section class="simple-hero simple-hero--single">
+    <article class="simple-hero-copy">
+    <p class="page-eyebrow">Value &amp; Metrics</p>
+    <h1>Как измеряем полезность цифрового двойника</h1>
+    <details class="fold-card">
+      <summary>
+        <div class="fold-copy">
+          <span class="fold-title">Логика измерения</span>
+          <span class="fold-hint">Какие действия пользователя проверяем</span>
+        </div>
+        <span class="fold-icon" aria-hidden="true"></span>
+      </summary>
+      <div class="fold-body">
+        <p>
+          Метрики собраны из 3-го этапа и привязаны к тому, что пользователь
+          реально делает в прототипе: понимает структуру станции, запускает
+          стыковку, сравнивает конфигурации и возвращается к инструменту
+          повторно.
+        </p>
+      </div>
+    </details>
+    </article>
+  </section>
+
+  <section class="fold-page-grid">
+    <div class="fold-stack">
+    {% for item in metrics %}
+    <details class="fold-card">
+      <summary>
+        <div class="fold-copy">
+          <span class="fold-title">{{ item.metric }}</span>
+          <span class="fold-hint">Цель: {{ item.target }}</span>
+        </div>
+        <span class="fold-icon" aria-hidden="true"></span>
+      </summary>
+      <div class="fold-body">
+        <p>{{ item.impact }}</p>
+        <div class="baseline-pill">База сравнения: {{ item.baseline }}</div>
+      </div>
+    </details>
+    {% endfor %}
+    </div>
+
+    <div class="fold-stack">
+      {% for story in scenarios %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">{{ story.name }}</span>
+            <span class="fold-hint">Как этот сценарий подтверждает пользу</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>{{ story.description }}</p>
+        </div>
+      </details>
+      {% endfor %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">На что смотреть при тестировании</span>
+            <span class="fold-hint">Интерпретация метрик</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <ul class="compact-list">
+            <li>Высокая длительность сессии полезна только вместе с завершением сценариев.</li>
+            <li>Если пользователь долго в интерфейсе, но не доводит стыковку до конца — нужен UX-рефакторинг.</li>
+            <li>Повторные визиты инженеров и преподавателей важнее, чем разовый wow-эффект.</li>
+            <li>Количество просмотренных конфигураций за сессию показывает удобство параметрического анализа.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+{% endblock %}

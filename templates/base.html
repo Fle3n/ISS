@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{{ mission_title }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Unbounded:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+        }
+      }
+    </script>
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body class="{% block body_class %}content-page{% endblock %}">
+    <header class="top-nav-wrap">
+      <a class="brand-mark" href="{{ url_for('index') }}">
+        <span class="brand-orb">МКС</span>
+        <span class="brand-label">МКС · Digital Twin</span>
+      </a>
+      <nav class="top-nav" aria-label="Главная навигация">
+        {% for item in site_nav %}
+        <a
+          class="top-nav-link {% if active_page == item.key %}is-active{% endif %}"
+          href="{{ url_for(item.endpoint) }}"
+          {% if active_page == item.key %}aria-current="page"{% endif %}
+        >
+          <span>{{ item.eyebrow }}</span>
+          <strong>{{ item.label }}</strong>
+        </a>
+        {% endfor %}
+      </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/ui_animations.js') }}"
+    ></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

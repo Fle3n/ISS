@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Главная · {{ mission_title }}{% endblock %}
+
+{% block content %}
+<main class="story-page">
+  <section class="simple-hero">
+    <article class="simple-hero-copy">
+      <p class="page-eyebrow">Этап 4 · Многостраничный веб-прототип</p>
+      <h1>Интерактивный цифровой двойник станции нового поколения</h1>
+      <div class="page-actions">
+        <a class="action-button" href="{{ url_for('simulator') }}">Открыть 3D-симулятор</a>
+        <a class="action-button action-button--soft" href="{{ url_for('architecture') }}">Смотреть архитектуру</a>
+      </div>
+      <div class="fold-stack">
+        <details class="fold-card">
+          <summary>
+            <div class="fold-copy">
+              <span class="fold-title">Что делает прототип</span>
+              <span class="fold-hint">Орбита, стыковка, расширение, связь</span>
+            </div>
+            <span class="fold-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="fold-body">
+            <p>
+              Единая визуальная система для орбитального моделирования,
+              сценариев стыковки, расширения станции и демонстрации
+              межспутниковой связи. Проект собран по логике этапов Problem
+              Proof, Solution Hypothesis и Value &amp; Metrics.
+            </p>
+          </div>
+        </details>
+        <details class="fold-card">
+          <summary>
+            <div class="fold-copy">
+              <span class="fold-title">Почему такой формат удобен</span>
+              <span class="fold-hint">Меньше текста снаружи, детали по клику</span>
+            </div>
+            <span class="fold-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="fold-body">
+            <p>
+              Главный экран остается коротким, а подробности о задачах,
+              сценариях и метриках раскрываются внутри карточек. Это делает
+              подачу проще и помогает быстро перейти к 3D-симулятору.
+            </p>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="hero-panel hero-panel--visual">
+      <div class="orbit-hero">
+        <div class="orbit-ring orbit-ring--outer"></div>
+        <div class="orbit-ring orbit-ring--middle"></div>
+        <div class="orbit-ring orbit-ring--inner"></div>
+        <div class="hero-planet"></div>
+        <div class="hero-station"></div>
+        <div class="hero-satellite hero-satellite--a"></div>
+        <div class="hero-satellite hero-satellite--b"></div>
+        <div class="hero-link hero-link--a"></div>
+        <div class="hero-link hero-link--b"></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="fold-page-grid">
+    <div class="fold-stack">
+      {% for item in highlights %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">{{ item.value }} · {{ item.title }}</span>
+            <span class="fold-hint">Ключевой акцент прототипа</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>{{ item.text }}</p>
+        </div>
+      </details>
+      {% endfor %}
+    </div>
+
+    <div class="fold-stack">
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">Что именно закрывает продукт</span>
+            <span class="fold-hint">Единый интерфейс вместо разрозненных источников</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>
+            У пользователя больше нет отдельного набора 3D-моделей, TLE-данных,
+            схем стыковки и слайдов. Любое изменение параметра сразу превращается
+            в понятный визуальный результат в одной системе.
+          </p>
+        </div>
+      </details>
+      {% for story in user_stories %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">{{ story.name }}</span>
+            <span class="fold-hint">User Story</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <p>{{ story.description }}</p>
+        </div>
+      </details>
+      {% endfor %}
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">Что уже реализовано</span>
+            <span class="fold-hint">Функциональность текущего веб-сайта</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <ul class="compact-list">
+            <li>Многостраничный Flask-сайт с общей навигацией.</li>
+            <li>3D-сцена станции с управлением камерой и параметрами орбиты.</li>
+            <li>Стыковка новых модулей и расширение конфигурации.</li>
+            <li>Ретрансляторы, радиолинии, помехи, throughput и журнал событий.</li>
+            <li>Переключение языка RU / EN внутри симулятора.</li>
+          </ul>
+          <a class="deep-link" href="{{ url_for('metrics') }}">Перейти к метрикам продукта</a>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+{% endblock %}
