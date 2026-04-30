@@ -7,21 +7,37 @@
   <section class="simple-hero simple-hero--single">
     <article class="simple-hero-copy">
     <p class="page-eyebrow">Value &amp; Metrics</p>
-    <h1>Как измеряем полезность цифрового двойника</h1>
+    <h1>
+      <span class="lang-ru">Как измеряем полезность цифрового двойника</span>
+      <span class="lang-en">How we measure digital twin value</span>
+    </h1>
     <details class="fold-card">
       <summary>
         <div class="fold-copy">
-          <span class="fold-title">Логика измерения</span>
-          <span class="fold-hint">Какие действия пользователя проверяем</span>
+          <span class="fold-title">
+            <span class="lang-ru">Логика измерения</span>
+            <span class="lang-en">Measurement logic</span>
+          </span>
+          <span class="fold-hint">
+            <span class="lang-ru">Какие действия пользователя проверяем</span>
+            <span class="lang-en">Which user actions are validated</span>
+          </span>
         </div>
         <span class="fold-icon" aria-hidden="true"></span>
       </summary>
       <div class="fold-body">
         <p>
-          Метрики собраны из 3-го этапа и привязаны к тому, что пользователь
-          реально делает в прототипе: понимает структуру станции, запускает
-          стыковку, сравнивает конфигурации и возвращается к инструменту
-          повторно.
+          <span class="lang-ru">
+            Метрики собраны из 3-го этапа и привязаны к тому, что пользователь
+            реально делает в прототипе: понимает структуру станции, запускает
+            стыковку, сравнивает конфигурации и возвращается к инструменту
+            повторно.
+          </span>
+          <span class="lang-en">
+            The metrics come from stage 3 and are tied to real prototype
+            actions: understanding the station, launching docking, comparing
+            configurations and returning to the tool.
+          </span>
         </p>
       </div>
     </details>
@@ -34,14 +50,26 @@
     <details class="fold-card">
       <summary>
         <div class="fold-copy">
-          <span class="fold-title">{{ item.metric }}</span>
-          <span class="fold-hint">Цель: {{ item.target }}</span>
+          <span class="fold-title">
+            <span class="lang-ru">{{ item.metric }}</span>
+            <span class="lang-en">{{ item.metricEn }}</span>
+          </span>
+          <span class="fold-hint">
+            <span class="lang-ru">Цель: {{ item.target }}</span>
+            <span class="lang-en">Target: {{ item.targetEn }}</span>
+          </span>
         </div>
         <span class="fold-icon" aria-hidden="true"></span>
       </summary>
       <div class="fold-body">
-        <p>{{ item.impact }}</p>
-        <div class="baseline-pill">База сравнения: {{ item.baseline }}</div>
+        <p>
+          <span class="lang-ru">{{ item.impact }}</span>
+          <span class="lang-en">{{ item.impactEn }}</span>
+        </p>
+        <div class="baseline-pill">
+          <span class="lang-ru">База сравнения: {{ item.baseline }}</span>
+          <span class="lang-en">Baseline: {{ item.baselineEn }}</span>
+        </div>
       </div>
     </details>
     {% endfor %}
@@ -52,30 +80,57 @@
       <details class="fold-card">
         <summary>
           <div class="fold-copy">
-            <span class="fold-title">{{ story.name }}</span>
-            <span class="fold-hint">Как этот сценарий подтверждает пользу</span>
+            <span class="fold-title">
+              <span class="lang-ru">{{ story.name }}</span>
+              <span class="lang-en">{{ story.nameEn }}</span>
+            </span>
+            <span class="fold-hint">
+              <span class="lang-ru">Как этот сценарий подтверждает пользу</span>
+              <span class="lang-en">How this scenario proves value</span>
+            </span>
           </div>
           <span class="fold-icon" aria-hidden="true"></span>
         </summary>
         <div class="fold-body">
-          <p>{{ story.description }}</p>
+          <p>
+            <span class="lang-ru">{{ story.description }}</span>
+            <span class="lang-en">{{ story.descriptionEn }}</span>
+          </p>
         </div>
       </details>
       {% endfor %}
       <details class="fold-card">
         <summary>
           <div class="fold-copy">
-            <span class="fold-title">На что смотреть при тестировании</span>
-            <span class="fold-hint">Интерпретация метрик</span>
+            <span class="fold-title">
+              <span class="lang-ru">На что смотреть при тестировании</span>
+              <span class="lang-en">What to watch during testing</span>
+            </span>
+            <span class="fold-hint">
+              <span class="lang-ru">Интерпретация метрик</span>
+              <span class="lang-en">Metric interpretation</span>
+            </span>
           </div>
           <span class="fold-icon" aria-hidden="true"></span>
         </summary>
         <div class="fold-body">
           <ul class="compact-list">
-            <li>Высокая длительность сессии полезна только вместе с завершением сценариев.</li>
-            <li>Если пользователь долго в интерфейсе, но не доводит стыковку до конца — нужен UX-рефакторинг.</li>
-            <li>Повторные визиты инженеров и преподавателей важнее, чем разовый wow-эффект.</li>
-            <li>Количество просмотренных конфигураций за сессию показывает удобство параметрического анализа.</li>
+            <li>
+              <span class="lang-ru">Высокая длительность сессии полезна только вместе с завершением сценариев.</span>
+              <span class="lang-en">Long sessions are useful only when key scenarios are completed.</span>
+            </li>
+            <li>
+              <span class="lang-ru">Если пользователь долго в интерфейсе, но не доводит стыковку до конца — нужен UX-рефакторинг.</span>
+              <span class="lang-en">If users stay long but do not finish docking, the UX needs refinement.</span>
+            </li>
+            <li>
+              <span class="lang-ru">Повторные визиты инженеров и преподавателей важнее, чем разовый wow-эффект.</span>
+              <span class="lang-en">Repeat visits by engineers and educators matter more than one-time novelty.</span>
+            </li>
+            <li>
+              <span class="lang-ru">Количество просмотренных конфигураций за сессию показывает удобство параметрического анализа.</span>
+              <span class="lang-en">The number of configurations reviewed per session shows parameter-analysis usability.</span>
+            </li>
           </ul>
         </div>
       </details>

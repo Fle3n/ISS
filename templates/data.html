@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Данные · {{ mission_title }}{% endblock %}
+{% block body_class %}template-data-page{% endblock %}
+{% block section_kicker %}телеметрия{% endblock %}
+{% block page_title %}Данные{% endblock %}
+
+{% block content %}
+<section class="data-page-grid">
+  <article class="template-panel data-board">
+    <div class="panel-tabs">
+      <button class="is-active">Телеметрия</button>
+      <button>Графики</button>
+      <button>Журналы</button>
+      <button>Экспорт</button>
+    </div>
+    <div class="data-tile-grid">
+      <article><span>Температура внутри</span><strong>22.3 °C</strong><em class="spark spark--pink"></em></article>
+      <article><span>Температура снаружи</span><strong>-156.7 °C</strong><em class="spark spark--cyan"></em></article>
+      <article><span>Давление в модуле</span><strong>101.3 кПа</strong><em class="spark spark--blue"></em></article>
+      <article><span>Влажность</span><strong>45.2 %</strong><em class="spark spark--violet"></em></article>
+      <article><span>Уровень CO₂</span><strong>0.08 %</strong><em class="spark spark--cyan"></em></article>
+      <article><span>Потребляемая мощность</span><strong>12.4 кВт</strong><em class="spark spark--pink"></em></article>
+      <article><span>Скорость относительно Земли</span><strong>7.67 км/с</strong><em class="spark spark--blue"></em></article>
+      <article><span>Освещенность</span><strong>Освещено</strong><em class="spark spark--violet"></em></article>
+    </div>
+  </article>
+
+  <article class="template-panel chart-card">
+    <div class="chart-card__head">
+      <h2>Температура внутри</h2>
+      <div class="panel-tabs panel-tabs--small"><button class="is-active">1ч</button><button>6ч</button><button>24ч</button><button>7д</button></div>
+    </div>
+    <div class="line-chart" aria-hidden="true">
+      <svg viewBox="0 0 520 260" role="img">
+        <defs>
+          <linearGradient id="chartLine" x1="0" x2="1">
+            <stop offset="0%" stop-color="#ff2fcf" />
+            <stop offset="100%" stop-color="#28c9ff" />
+          </linearGradient>
+        </defs>
+        <path d="M10 178 C50 120,80 200,120 138 S190 80,230 142 S290 214,330 126 S400 90,450 154 S495 116,510 86" />
+      </svg>
+    </div>
+  </article>
+</section>
+{% endblock %}

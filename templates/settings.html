@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Настройки · {{ mission_title }}{% endblock %}
+{% block body_class %}template-settings-page{% endblock %}
+{% block section_kicker %}параметры интерфейса{% endblock %}
+{% block page_title %}Настройки{% endblock %}
+
+{% block content %}
+<section class="settings-page-grid">
+  <article class="template-panel settings-card">
+    <h2>Интерфейс</h2>
+    <label><span>Тема</span><select><option>Неоновая темная</option><option>Контрастная</option></select></label>
+    <label><span>Единицы измерения</span><select><option>Километры и метры</option><option>Мили и футы</option></select></label>
+    <label><span>Обновление данных</span><select><option>Каждые 10 секунд</option><option>Вручную</option></select></label>
+  </article>
+  <article class="template-panel settings-card">
+    <h2>Симулятор</h2>
+    <label><input type="checkbox" checked /> Реальные текстуры планет</label>
+    <label><input type="checkbox" checked /> Орбитальные линии</label>
+    <label><input type="checkbox" checked /> Подсветка активных модулей</label>
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Сценарии · {{ mission_title }}{% endblock %}
+{% block body_class %}template-scenarios-page{% endblock %}
+{% block section_kicker %}готовые сценарии{% endblock %}
+{% block page_title %}Сценарии{% endblock %}
+
+{% block content %}
+<section class="scenario-page-grid">
+  <article class="template-panel scenario-list-card">
+    <div class="panel-tabs">
+      <button class="is-active">Готовые сценарии</button>
+      <button>Мои сценарии</button>
+    </div>
+    {% set scenarios = [
+      ("Сближение с грузовым кораблём", "Симуляция подхода и стыковки грузового корабля к МКС.", "Средний"),
+      ("Изменение высоты орбиты", "Подъём орбиты на 10 км с использованием двигателей.", "Легкий"),
+      ("Аварийное отключение системы", "Моделирование отказа и восстановления системы питания.", "Сложный")
+    ] %}
+    <div class="scenario-list">
+      {% for title, text, level in scenarios %}
+      <article>
+        <div>
+          <h2>{{ title }}</h2>
+          <p>{{ text }}</p>
+        </div>
+        <span class="difficulty">{{ level }}</span>
+        <button type="button">Запустить</button>
+      </article>
+      {% endfor %}
+      <button type="button" class="create-scenario"><i data-lucide="plus-circle"></i> Создать новый сценарий</button>
+    </div>
+  </article>
+
+  <aside class="template-panel scenario-params-card">
+    <h2>Параметры сценария</h2>
+    <dl>
+      <div><dt>Длительность</dt><dd>01:30:00</dd></div>
+      <div><dt>Ускорение времени</dt><dd>5x</dd></div>
+      <div><dt>Начальные условия</dt><dd>Стандартные</dd></div>
+      <div><dt>Влияние внешних факторов</dt><dd>Включено</dd></div>
+    </dl>
+    <a class="template-primary-button" href="{{ url_for('simulator') }}">Запустить сценарий</a>
+  </aside>
+</section>
+{% endblock %}

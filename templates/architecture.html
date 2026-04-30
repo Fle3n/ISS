@@ -7,19 +7,34 @@
   <section class="simple-hero simple-hero--single">
     <article class="simple-hero-copy">
       <p class="page-eyebrow">Architecture / Open Data</p>
-      <h1>Как устроен многостраничный веб-прототип</h1>
+      <h1>
+        <span class="lang-ru">Как устроен многостраничный веб-прототип</span>
+        <span class="lang-en">How the multi-page web prototype is built</span>
+      </h1>
       <details class="fold-card">
         <summary>
           <div class="fold-copy">
-            <span class="fold-title">Что описано на этой странице</span>
-            <span class="fold-hint">Стек, слои, модели, источники данных</span>
+            <span class="fold-title">
+              <span class="lang-ru">Что описано на этой странице</span>
+              <span class="lang-en">What this page describes</span>
+            </span>
+            <span class="fold-hint">
+              <span class="lang-ru">Стек, слои, модели, источники данных</span>
+              <span class="lang-en">Stack, layers, models and data sources</span>
+            </span>
           </div>
           <span class="fold-icon" aria-hidden="true"></span>
         </summary>
         <div class="fold-body">
           <p>
-            Страница фиксирует технический стек, логику взаимодействия слоёв и
-            открытые источники данных, которые можно указать в защите проекта.
+            <span class="lang-ru">
+              Страница фиксирует технический стек, логику взаимодействия слоёв и
+              открытые источники данных, которые можно указать в защите проекта.
+            </span>
+            <span class="lang-en">
+              This page records the technical stack, layer interaction model and
+              open data sources that can be referenced during the project review.
+            </span>
           </p>
         </div>
       </details>
@@ -38,7 +53,10 @@
           <span class="fold-icon" aria-hidden="true"></span>
         </summary>
         <div class="fold-body">
-          <p>{{ layer.details }}</p>
+          <p>
+            <span class="lang-ru">{{ layer.details }}</span>
+            <span class="lang-en">{{ layer.detailsEn }}</span>
+          </p>
         </div>
       </details>
       {% endfor %}
@@ -49,21 +67,30 @@
         <details class="fold-card">
           <summary>
             <div class="fold-copy">
-              <span class="fold-title">{{ module.name }}</span>
+              <span class="fold-title">
+                <span class="lang-ru">{{ module.name }}</span>
+                <span class="lang-en">{{ module.nameEn }}</span>
+              </span>
               <span class="fold-hint">Simulation module</span>
             </div>
             <span class="fold-icon" aria-hidden="true"></span>
           </summary>
           <div class="fold-body">
-            <p>{{ module.summary }}</p>
+            <p>
+              <span class="lang-ru">{{ module.summary }}</span>
+              <span class="lang-en">{{ module.summaryEn }}</span>
+            </p>
           </div>
         </details>
         {% endfor %}
       <details class="fold-card">
         <summary>
           <div class="fold-copy">
-            <span class="fold-title">Источники и TLE-референс</span>
-            <span class="fold-hint">NASA, CelesTrak, публичные справочники</span>
+            <span class="fold-title">
+              <span class="lang-ru">Источники и TLE-референс</span>
+              <span class="lang-en">Sources and TLE reference</span>
+            </span>
+            <span class="fold-hint">NASA, ESA, ROSCOSMOS, CelesTrak, Space-Track</span>
           </div>
           <span class="fold-icon" aria-hidden="true"></span>
         </summary>
@@ -72,7 +99,10 @@
         {% for source in mission_profile.openDataSources %}
             <a class="source-link" href="{{ source.url }}" target="_blank" rel="noreferrer">
               <strong>{{ source.name }}</strong>
-              <span>{{ source.usage }}</span>
+              <span>
+                <span class="lang-ru">{{ source.usageRu }}</span>
+                <span class="lang-en">{{ source.usage }}</span>
+              </span>
             </a>
         {% endfor %}
           </div>
@@ -80,7 +110,59 @@
             <p>{{ mission_profile.orbitReference.label }}</p>
             <code>{{ mission_profile.orbitReference.tleSample[0] }}</code>
             <code>{{ mission_profile.orbitReference.tleSample[1] }}</code>
+            <p>
+              <span class="lang-ru">{{ mission_profile.orbitReference.notesRu }}</span>
+              <span class="lang-en">{{ mission_profile.orbitReference.notes }}</span>
+            </p>
           </div>
+        </div>
+      </details>
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">
+              <span class="lang-ru">Форматы данных</span>
+              <span class="lang-en">Data formats</span>
+            </span>
+            <span class="fold-hint">JSON, TLE, glTF, OBJ, WebGL</span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <ul class="compact-list">
+            {% for standard in mission_profile.dataStandards %}
+            <li>
+              <strong>{{ standard.format }}</strong>
+              <span class="lang-ru">— {{ standard.usageRu }}</span>
+              <span class="lang-en">— {{ standard.usage }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
+      <details class="fold-card">
+        <summary>
+          <div class="fold-copy">
+            <span class="fold-title">
+              <span class="lang-ru">Соответствие критериям</span>
+              <span class="lang-en">Criteria compliance</span>
+            </span>
+            <span class="fold-hint">
+              <span class="lang-ru">Короткая матрица готовности</span>
+              <span class="lang-en">Short readiness matrix</span>
+            </span>
+          </div>
+          <span class="fold-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="fold-body">
+          <ul class="compact-list">
+            {% for item in compliance_items %}
+            <li>
+              <span class="lang-ru"><strong>{{ item.criterionRu }}:</strong> {{ item.statusRu }}. {{ item.evidenceRu }}</span>
+              <span class="lang-en"><strong>{{ item.criterion }}:</strong> {{ item.status }}. {{ item.evidence }}</span>
+            </li>
+            {% endfor %}
+          </ul>
         </div>
       </details>
     </div>

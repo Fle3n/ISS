@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Система МКС · {{ mission_title }}{% endblock %}
+{% block body_class %}template-system-page{% endblock %}
+{% block section_kicker %}структура станции{% endblock %}
+{% block page_title %}Система МКС{% endblock %}
+
+{% block content %}
+<section class="system-page-grid">
+  <aside class="template-panel module-list-card">
+    <h2>Модули</h2>
+    {% set modules = [
+      ("Заря", "Служебный модуль", "nominal"),
+      ("Звезда", "Сервисный модуль", "active"),
+      ("Поиск", "Стыковочный отсек", "nominal"),
+      ("Рассвет", "Малый исслед. модуль", "nominal"),
+      ("Наука", "Научный модуль", "nominal")
+    ] %}
+    <div class="module-list">
+      {% for name, role, state in modules %}
+      <button class="{% if state == 'active' %}is-active{% endif %}" type="button">
+        <span></span>
+        <strong>{{ name }}</strong>
+        <small>{{ role }}</small>
+      </button>
+      {% endfor %}
+      <button type="button"><i data-lucide="plus-circle"></i><strong>Ещё 6 модулей</strong></button>
+    </div>
+  </aside>
+
+  <article class="template-panel station-blueprint">
+    <div class="station-assembly" aria-hidden="true">
+      <div class="station-truss"></div>
+      <div class="station-module station-module--core"></div>
+      <div class="station-module station-module--lab"></div>
+      <div class="station-array station-array--left"></div>
+      <div class="station-array station-array--right"></div>
+      <div class="station-node"></div>
+    </div>
+  </article>
+
+  <aside class="template-panel module-details-card">
+    <h2>Звезда</h2>
+    <p>Служебный модуль</p>
+    <dl>
+      <div><dt>Масса</dt><dd>19 000 кг</dd></div>
+      <div><dt>Длина</dt><dd>13.1 м</dd></div>
+      <div><dt>Диаметр</dt><dd>4.1 м</dd></div>
+      <div><dt>Объем</dt><dd>90 м³</dd></div>
+      <div><dt>Экипаж</dt><dd>-</dd></div>
+      <div><dt>Состояние</dt><dd class="is-nominal">Нормальное</dd></div>
+    </dl>
+    <button type="button" class="template-secondary-button">Подробнее <i data-lucide="arrow-right"></i></button>
+  </aside>
+
+  <section class="system-status-row">
+    <article class="template-panel"><span>Энергоснабжение</span><strong>Нормально</strong></article>
+    <article class="template-panel"><span>Терморегуляция</span><strong>Нормально</strong></article>
+    <article class="template-panel"><span>Связь</span><strong>Нормально</strong></article>
+    <article class="template-panel"><span>Двигательная установка</span><strong>Нормально</strong></article>
+  </section>
+</section>
+{% endblock %}

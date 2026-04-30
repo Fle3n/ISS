@@ -1,30 +1,152 @@
+import json
 import os
+import ssl
+import urllib.error
+import urllib.request
 
-from flask import Flask, jsonify, render_template
+import certifi
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 
 
 app = Flask(__name__)
 DEFAULT_PORT = int(os.environ.get("PORT", "7001"))
+ISS_NOW_URL = "https://api.wheretheiss.at/v1/satellites/25544"
+ISS_SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 SITE_NAV = [
-    {"endpoint": "index", "key": "home", "label": "Главная", "eyebrow": "Обзор"},
+    {
+        "endpoint": "index",
+        "key": "home",
+        "label": "Главная",
+        "i18n": "navHome",
+        "icon": "home",
+    },
     {
         "endpoint": "simulator",
         "key": "simulator",
-        "label": "3D симулятор",
-        "eyebrow": "Digital Twin",
+        "label": "Симулятор",
+        "i18n": "navSimulator",
+        "icon": "satellite",
     },
     {
-        "endpoint": "metrics",
-        "key": "metrics",
-        "label": "Метрики",
-        "eyebrow": "Value",
+        "endpoint": "constructor",
+        "key": "constructor",
+        "label": "Конструктор",
+        "i18n": "navConstructor",
+        "icon": "box",
     },
     {
-        "endpoint": "architecture",
-        "key": "architecture",
-        "label": "Архитектура",
-        "eyebrow": "Data & Stack",
+        "endpoint": "settings",
+        "key": "settings",
+        "label": "Настройки",
+        "i18n": "navSettings",
+        "icon": "settings",
+    },
+]
+
+
+SITE_NAV = [
+    {
+        "endpoint": "index",
+        "key": "home",
+        "label": "Главная",
+        "i18n": "navHome",
+        "icon": "home",
+    },
+    {
+        "endpoint": "simulator",
+        "key": "simulator",
+        "label": "Симулятор",
+        "i18n": "navSimulator",
+        "icon": "satellite",
+    },
+    {
+        "endpoint": "orbit",
+        "key": "orbit",
+        "label": "Орбита",
+        "i18n": "navOrbit",
+        "icon": "orbit",
+    },
+    {
+        "endpoint": "system",
+        "key": "system",
+        "label": "Система МКС",
+        "i18n": "navSystem",
+        "icon": "box",
+    },
+    {
+        "endpoint": "data",
+        "key": "data",
+        "label": "Данные",
+        "i18n": "navData",
+        "icon": "bar-chart-3",
+    },
+    {
+        "endpoint": "scenarios",
+        "key": "scenarios",
+        "label": "Сценарии",
+        "i18n": "navScenarios",
+        "icon": "play",
+    },
+    {
+        "endpoint": "settings",
+        "key": "settings",
+        "label": "Настройки",
+        "i18n": "navSettings",
+        "icon": "settings",
+    },
+]
+
+
+SITE_NAV = [
+    {
+        "endpoint": "index",
+        "key": "home",
+        "label": "\u0413\u043b\u0430\u0432\u043d\u0430\u044f",
+        "i18n": "navHome",
+        "icon": "home",
+    },
+    {
+        "endpoint": "simulator",
+        "key": "simulator",
+        "label": "\u0421\u0438\u043c\u0443\u043b\u044f\u0442\u043e\u0440",
+        "i18n": "navSimulator",
+        "icon": "satellite",
+    },
+    {
+        "endpoint": "constructor",
+        "key": "constructor",
+        "label": "\u041a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440",
+        "i18n": "navConstructor",
+        "icon": "component",
+    },
+    {
+        "endpoint": "system",
+        "key": "system",
+        "label": "\u0421\u0438\u0441\u0442\u0435\u043c\u0430 \u041c\u041a\u0421",
+        "i18n": "navSystem",
+        "icon": "box",
+    },
+    {
+        "endpoint": "data",
+        "key": "data",
+        "label": "\u0414\u0430\u043d\u043d\u044b\u0435",
+        "i18n": "navData",
+        "icon": "bar-chart-3",
+    },
+    {
+        "endpoint": "scenarios",
+        "key": "scenarios",
+        "label": "\u0421\u0446\u0435\u043d\u0430\u0440\u0438\u0438",
+        "i18n": "navScenarios",
+        "icon": "play",
+    },
+    {
+        "endpoint": "settings",
+        "key": "settings",
+        "label": "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+        "i18n": "navSettings",
+        "icon": "settings",
     },
 ]
 
@@ -37,17 +159,66 @@ MISSION_PROFILE = {
         {
             "name": "NASA Planetary Fact Sheets",
             "usage": "Planetary radii and gravitational parameters for orbit presets.",
+            "usageRu": "Радиусы планет и гравитационные параметры для орбитальных пресетов.",
             "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/",
+        },
+        {
+            "name": "ESA Earth Observation / Open Access",
+            "usage": "International open-data reference for Earth observation and open science context.",
+            "usageRu": "Международный open-data ориентир для наблюдения Земли и open science контекста.",
+            "url": "https://www.esa.int/Applications/Observing_the_Earth/How_to_access_data",
+        },
+        {
+            "name": "ROSCOSMOS open public materials",
+            "usage": "Public Russian space-sector reference context for educational comparison.",
+            "usageRu": "Публичный российский справочный контекст для образовательного сравнения.",
+            "url": "https://www.roscosmos.ru/",
         },
         {
             "name": "CelesTrak",
             "usage": "TLE terminology and orbital reference conventions.",
+            "usageRu": "Терминология TLE и справочные орбитальные соглашения.",
             "url": "https://celestrak.org/",
+        },
+        {
+            "name": "Where the ISS at?",
+            "usage": "Realtime ISS latitude, longitude, altitude, and velocity for NORAD 25544.",
+            "usageRu": "Текущие широта, долгота, высота и скорость МКС для NORAD 25544.",
+            "url": "https://wheretheiss.at/w/developer",
+        },
+        {
+            "name": "Space-Track",
+            "usage": "International orbital-catalog reference source; no restricted data is bundled.",
+            "usageRu": "Международный справочник орбитального каталога; закрытые данные не поставляются.",
+            "url": "https://www.space-track.org/",
         },
         {
             "name": "NASA 3D Resources",
             "usage": "Reference for station module proportions and public 3D asset taxonomy.",
+            "usageRu": "Референс пропорций модулей станции и публичной таксономии 3D-ресурсов.",
             "url": "https://nasa3d.arc.nasa.gov/models",
+        },
+    ],
+    "dataStandards": [
+        {
+            "format": "JSON",
+            "usage": "Mission profile, planet constants, presets, telemetry labels, and public API payloads.",
+            "usageRu": "Профиль миссии, константы планет, пресеты, подписи телеметрии и публичные API-данные.",
+        },
+        {
+            "format": "TLE",
+            "usage": "Orbital reference notation for ISS-like educational context.",
+            "usageRu": "Орбитальная запись для учебного ISS-like контекста.",
+        },
+        {
+            "format": "glTF / OBJ",
+            "usage": "Recommended interchange formats for future external 3D station assets.",
+            "usageRu": "Рекомендуемые форматы обмена для будущих внешних 3D-ресурсов станции.",
+        },
+        {
+            "format": "WebGL / ES Modules",
+            "usage": "Browser-native runtime format for the current interactive simulator.",
+            "usageRu": "Браузерный runtime-формат текущего интерактивного симулятора.",
         },
     ],
     "orbitReference": {
@@ -59,7 +230,14 @@ MISSION_PROFILE = {
         "notes": (
             "The frontend uses a circularized orbit model with real gravitational "
             "constants and altitude/inclination controls for realtime educational "
-            "visualization."
+            "visualization. The sample TLE is included only as an open reference "
+            "format example, not as operational tracking data."
+        ),
+        "notesRu": (
+            "Фронтенд использует круговую орбитальную модель с реальными "
+            "гравитационными константами и управлением высотой/наклонением для "
+            "учебной realtime-визуализации. Пример TLE добавлен только как "
+            "открытый пример формата, а не как оперативные данные слежения."
         ),
     },
     "planets": {
@@ -179,23 +357,38 @@ LANDING_HIGHLIGHTS = [
 LANDING_STORIES = [
     {
         "name": "Инженерный анализ",
+        "nameEn": "Engineering analysis",
         "description": (
             "Изменение высоты орбиты, наклонения, ориентации и структуры "
             "станции для быстрого сравнения конфигураций."
         ),
+        "descriptionEn": (
+            "Change orbital altitude, inclination, attitude and station "
+            "structure to compare configurations quickly."
+        ),
     },
     {
         "name": "Образовательный сценарий",
+        "nameEn": "Educational docking",
         "description": (
             "Пошаговая демонстрация сближения, мягкого захвата и фиксации "
             "нового модуля к выбранному узлу."
         ),
+        "descriptionEn": (
+            "Demonstrate approach, soft capture and final locking of a new "
+            "module to the selected docking port."
+        ),
     },
     {
         "name": "Презентационный сценарий",
+        "nameEn": "Presentation expansion",
         "description": (
             "Наглядное расширение станции, включение ретрансляторов и "
             "демонстрация изменения телеметрии в реальном времени."
+        ),
+        "descriptionEn": (
+            "Show station growth, relay activation and realtime telemetry "
+            "changes for a presentation."
         ),
     },
 ]
@@ -203,39 +396,63 @@ LANDING_STORIES = [
 VALUE_METRICS = [
     {
         "metric": "Время до первого понимания структуры",
+        "metricEn": "Time to first structural understanding",
         "target": "5-7 минут",
+        "targetEn": "5-7 minutes",
         "baseline": "15-20 минут",
+        "baselineEn": "15-20 minutes",
         "impact": "Новый пользователь быстрее понимает состав и логику модулей.",
+        "impactEn": "A new user understands the module composition and logic faster.",
     },
     {
         "metric": "Время подготовки демонстрации",
+        "metricEn": "Demo preparation time",
         "target": "15-20 минут",
+        "targetEn": "15-20 minutes",
         "baseline": "60-90 минут",
+        "baselineEn": "60-90 minutes",
         "impact": "Снижается ручная сборка материалов из разрозненных источников.",
+        "impactEn": "Manual assembly of materials from scattered sources is reduced.",
     },
     {
         "metric": "Время объяснения стыковки",
+        "metricEn": "Docking explanation time",
         "target": "3-5 минут",
+        "targetEn": "3-5 minutes",
         "baseline": "Без интерактивного сценария дольше и менее наглядно",
+        "baselineEn": "Longer and less clear without an interactive scenario",
         "impact": "Процесс объясняется через действие, а не статичную схему.",
+        "impactEn": "The process is explained through action instead of a static diagram.",
     },
     {
         "metric": "Успешное прохождение ключевого сценария",
+        "metricEn": "Successful completion of the key scenario",
         "target": "≥ 70%",
+        "targetEn": "≥ 70%",
         "baseline": "Целевой UX-порог",
+        "baselineEn": "Target UX threshold",
         "impact": "Пользователь может самостоятельно запустить стыковку/расширение.",
+        "impactEn": "The user can launch docking or expansion independently.",
     },
     {
         "metric": "Правильное объяснение устройства станции",
+        "metricEn": "Correct explanation of station structure",
         "target": "≥ 80%",
+        "targetEn": "≥ 80%",
         "baseline": "После интерактивной сессии",
+        "baselineEn": "After an interactive session",
         "impact": "Подтверждает образовательную и презентационную ценность.",
+        "impactEn": "Confirms the educational and presentation value.",
     },
     {
         "metric": "Возврат инженеров в течение недели",
+        "metricEn": "Engineer return within one week",
         "target": "≥ 60%",
+        "targetEn": "≥ 60%",
         "baseline": "Показатель рабочей применимости",
+        "baselineEn": "Work applicability indicator",
         "impact": "Если прототип полезен, к нему возвращаются для анализа вариантов.",
+        "impactEn": "If the prototype is useful, users return to compare variants.",
     },
 ]
 
@@ -246,6 +463,10 @@ ARCHITECTURE_LAYERS = [
             "Отдаёт HTML-страницы, JSON-профиль миссии, справочные параметры "
             "планет, пресеты сценариев и healthcheck."
         ),
+        "detailsEn": (
+            "Serves HTML pages, the JSON mission profile, planet reference "
+            "parameters, scenario presets and the healthcheck."
+        ),
         "stack": "Python / Flask / Jinja2",
     },
     {
@@ -253,6 +474,10 @@ ARCHITECTURE_LAYERS = [
         "details": (
             "Строит процедурные модели планет, станции и ретрансляторов, "
             "рассчитывает круговую орбиту, стыковку и радиовидимость."
+        ),
+        "detailsEn": (
+            "Builds procedural planet, station and relay models, then "
+            "calculates the circular orbit, docking and radio visibility."
         ),
         "stack": "Three.js / WebGL / OrbitControls",
     },
@@ -262,6 +487,10 @@ ARCHITECTURE_LAYERS = [
             "Панели параметров, билингвальный интерфейс, журнал событий, "
             "реактивное обновление телеметрии и сценарные пресеты."
         ),
+        "detailsEn": (
+            "Parameter panels, bilingual interface, event log, reactive "
+            "telemetry updates and scenario presets."
+        ),
         "stack": "HTML5 / CSS3 / ES Modules",
     },
     {
@@ -270,6 +499,10 @@ ARCHITECTURE_LAYERS = [
             "В интерфейсе фиксируются источники открытых данных и TLE-"
             "референс, а физические параметры берутся из открытых справочников."
         ),
+        "detailsEn": (
+            "The interface records open-data sources and the TLE reference, "
+            "while physical parameters come from public references."
+        ),
         "stack": "NASA / CelesTrak / Public orbital references",
     },
 ]
@@ -277,24 +510,91 @@ ARCHITECTURE_LAYERS = [
 TECH_MODULES = [
     {
         "name": "Орбитальная модель",
+        "nameEn": "Orbital model",
         "summary": (
             "Упрощённая круговая орбита с управляемой высотой и наклонением, "
             "период и скорость считаются по гравитационному параметру μ."
         ),
+        "summaryEn": (
+            "Simplified circular orbit with controllable altitude and "
+            "inclination; period and velocity are derived from the "
+            "gravitational parameter μ."
+        ),
     },
     {
         "name": "Стыковочная логика",
+        "nameEn": "Docking logic",
         "summary": (
             "Новый модуль появляется на подходной траектории, переходит в "
             "режим захвата и после фиксации увеличивает длину выбранного порта."
         ),
+        "summaryEn": (
+            "A new module appears on an approach trajectory, enters capture "
+            "mode and extends the selected port after locking."
+        ),
     },
     {
         "name": "Коммуникационная модель",
+        "nameEn": "Communications model",
         "summary": (
             "Для каждого ретранслятора проверяется дальность, геометрическое "
             "перекрытие планетой и влияние мощности/помех на throughput."
         ),
+        "summaryEn": (
+            "Each relay is checked for range, planet occlusion and the impact "
+            "of antenna power and interference on throughput."
+        ),
+    },
+]
+
+COMPLIANCE_ITEMS = [
+    {
+        "criterion": "Open international data",
+        "criterionRu": "Открытые международные данные",
+        "status": "Documented",
+        "statusRu": "Зафиксировано",
+        "evidence": "NASA, ESA, ROSCOSMOS, CelesTrak, Space-Track and NASA 3D Resources are listed as the allowed source set.",
+        "evidenceRu": "NASA, ESA, ROSCOSMOS, CelesTrak, Space-Track и NASA 3D Resources указаны как разрешённый набор источников.",
+    },
+    {
+        "criterion": "Common data formats",
+        "criterionRu": "Общепринятые форматы данных",
+        "status": "Documented",
+        "statusRu": "Зафиксировано",
+        "evidence": "JSON and TLE are used now; glTF and OBJ are recorded as the interchange formats for future external 3D assets.",
+        "evidenceRu": "JSON и TLE используются сейчас; glTF и OBJ зафиксированы как форматы обмена для будущих внешних 3D-ресурсов.",
+    },
+    {
+        "criterion": "Bilingual interface",
+        "criterionRu": "Билингвальный интерфейс",
+        "status": "Implemented",
+        "statusRu": "Реализовано",
+        "evidence": "The global RU / EN switch covers the site navigation and simulator controls.",
+        "evidenceRu": "Глобальный переключатель RU / EN покрывает навигацию сайта и элементы управления симулятора.",
+    },
+    {
+        "criterion": "Reproducible web build",
+        "criterionRu": "Воспроизводимый веб-запуск",
+        "status": "Implemented",
+        "statusRu": "Реализовано",
+        "evidence": "Flask routes, healthcheck and setup commands are documented in README.md.",
+        "evidenceRu": "Маршруты Flask, healthcheck и команды запуска описаны в README.md.",
+    },
+    {
+        "criterion": "User stories",
+        "criterionRu": "Сценарии использования",
+        "status": "Implemented",
+        "statusRu": "Реализовано",
+        "evidence": "Engineering analysis, educational docking and presentation expansion are visible in the interface.",
+        "evidenceRu": "Инженерный анализ, учебная стыковка и презентационное расширение представлены в интерфейсе.",
+    },
+    {
+        "criterion": "Safety and ethics",
+        "criterionRu": "Безопасность и этика",
+        "status": "Documented",
+        "statusRu": "Зафиксировано",
+        "evidence": "The project states that no restricted tracking data or copyrighted station model is bundled.",
+        "evidenceRu": "Проект указывает, что закрытые трекинговые данные и copyrighted-модель станции не поставляются.",
     },
 ]
 
@@ -303,7 +603,21 @@ TECH_MODULES = [
 def inject_layout_state():
     return {
         "site_nav": SITE_NAV,
+        "mission_title": "Цифровой двойник МКС",
         "mission_title": "Цифровой двойник модульной орбитальной станции",
+    }
+
+
+@app.context_processor
+def inject_clean_layout_title():
+    return {"mission_title": "Цифровой двойник МКС"}
+
+
+@app.context_processor
+def inject_dashboard_layout_state():
+    return {
+        "site_nav": SITE_NAV,
+        "mission_title": "\u0426\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u0434\u0432\u043e\u0439\u043d\u0438\u043a \u041c\u041a\u0421",
     }
 
 
@@ -314,6 +628,10 @@ def index():
         active_page="home",
         highlights=LANDING_HIGHLIGHTS,
         user_stories=LANDING_STORIES,
+        metrics=VALUE_METRICS,
+        layers=ARCHITECTURE_LAYERS,
+        compliance_items=COMPLIANCE_ITEMS,
+        mission_profile=MISSION_PROFILE,
     )
 
 
@@ -322,25 +640,44 @@ def simulator():
     return render_template("simulator.html", active_page="simulator")
 
 
+@app.route("/constructor")
+def constructor():
+    return render_template("constructor.html", active_page="constructor")
+
+
+@app.route("/orbit")
+def orbit():
+    return redirect(url_for("simulator"))
+
+
+@app.route("/system")
+def system():
+    return render_template("system.html", active_page="system")
+
+
+@app.route("/data")
+def data():
+    return render_template("data.html", active_page="data")
+
+
+@app.route("/scenarios")
+def scenarios():
+    return render_template("scenarios.html", active_page="scenarios")
+
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html", active_page="settings")
+
+
 @app.route("/metrics")
 def metrics():
-    return render_template(
-        "metrics.html",
-        active_page="metrics",
-        metrics=VALUE_METRICS,
-        scenarios=LANDING_STORIES,
-    )
+    return redirect(url_for("data"))
 
 
 @app.route("/architecture")
 def architecture():
-    return render_template(
-        "architecture.html",
-        active_page="architecture",
-        layers=ARCHITECTURE_LAYERS,
-        tech_modules=TECH_MODULES,
-        mission_profile=MISSION_PROFILE,
-    )
+    return redirect(url_for("simulator"))
 
 
 @app.route("/api/mission-profile")
@@ -348,10 +685,54 @@ def mission_profile():
     return jsonify(MISSION_PROFILE)
 
 
+@app.route("/api/iss-now")
+def iss_now():
+    request_headers = {"User-Agent": "iss-digital-twin/1.0"}
+    request_obj = urllib.request.Request(ISS_NOW_URL, headers=request_headers)
+    try:
+        with urllib.request.urlopen(request_obj, timeout=10, context=ISS_SSL_CONTEXT) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except (
+        urllib.error.URLError,
+        TimeoutError,
+        json.JSONDecodeError,
+        KeyError,
+        TypeError,
+        ValueError,
+        OSError,
+    ) as error:
+        return jsonify(
+            {
+                "status": "unavailable",
+                "source": "Where the ISS at?",
+                "source_url": "https://wheretheiss.at/w/developer",
+                "error": str(error),
+            }
+        ), 502
+
+    velocity_kmh = float(payload.get("velocity", 0.0))
+    return jsonify(
+        {
+            "status": "ok",
+            "source": "Where the ISS at?",
+            "source_url": "https://wheretheiss.at/w/developer",
+            "id": payload.get("id"),
+            "name": payload.get("name"),
+            "latitude": float(payload["latitude"]),
+            "longitude": float(payload["longitude"]),
+            "altitude_km": float(payload["altitude"]),
+            "velocity_kmh": velocity_kmh,
+            "velocity_kms": velocity_kmh / 3600,
+            "timestamp": payload.get("timestamp"),
+            "visibility": payload.get("visibility"),
+        }
+    )
+
+
 @app.route("/healthz")
 def healthcheck():
     return jsonify(
-        {"status": "ok", "service": "digital-twin", "port": DEFAULT_PORT}
+        {"status": "ok", "service": "digital-twin", "host": request.host}
     )
 
 

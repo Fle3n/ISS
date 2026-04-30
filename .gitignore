@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Archives and dumps
+*.zip
+*.rar
+
+# Patch rejects / diffs
+*.rej
+*.patch
+
+# Screenshots / exports generated during UI work
+.simulator-*.png
+.reverted-current.png
+prototype*.jpg
+
+# Temporary helper scripts (keep source repo clean)
+apply_modifications.py
+extract_patch.py
+fix_html.py
+check.py
+check.js

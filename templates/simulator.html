@@ -1,382 +1,303 @@
 {% extends "base.html" %}
 
-{% block title %}3D симулятор · {{ mission_title }}{% endblock %}
-{% block body_class %}simulator-page{% endblock %}
+{% block title %}Симулятор · {{ mission_title }}{% endblock %}
+{% block body_class %}template-simulator-page{% endblock %}
+{% block section_kicker %}симуляция{% endblock %}
+{% block page_title %}Симулятор{% endblock %}
 
 {% block content %}
-<main class="mission-shell">
-  <section class="hud-panel hud-panel--left" aria-label="Панель управления">
-    <header class="mission-header">
-      <p class="mission-kicker" data-i18n="kicker">Этап 4 · 3D-прототип</p>
-      <h1 data-i18n="title">Цифровой двойник модульной орбитальной станции</h1>
-      <details class="fold-card mission-fold">
-        <summary>
-          <div class="fold-copy">
-            <span class="fold-title" data-i18n="simulatorHelpTitle">Как пользоваться симулятором</span>
-            <span class="fold-hint" data-i18n="subtitle">
-              Управляйте орбитой, модулями, стыковкой и межспутниковой связью в
-              реальном времени.
-            </span>
-          </div>
-          <span class="fold-icon" aria-hidden="true"></span>
-        </summary>
-        <div class="fold-body">
-          <p data-i18n="simulatorHelpBody">
-            Слева меняются параметры орбиты, ориентации и состава станции.
-            Справа запускается стыковка, настраивается сеть ретрансляторов и
-            отображается телеметрия.
-          </p>
-        </div>
-      </details>
-      <div class="header-actions">
-        <button type="button" class="pill-button" id="languageToggle">EN</button>
-        <button
-          type="button"
-          class="pill-button pill-button--ghost"
-          id="cameraHome"
-          data-i18n="cameraReset"
-        >
-          Сбросить камеру
-        </button>
-      </div>
-    </header>
-
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="presetsTitle">Сценарии</span>
-          <span class="fold-hint" data-i18n="presetsHint">Быстрые режимы настройки сцены</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-        <div class="preset-grid">
-        <button
-          type="button"
-          class="preset-button"
-          data-preset="engineering"
-          data-i18n="presetEngineering"
-        >
-          Инженерный анализ
-        </button>
-        <button
-          type="button"
-          class="preset-button"
-          data-preset="education"
-          data-i18n="presetEducation"
-        >
-          Обучение стыковке
-        </button>
-        <button
-          type="button"
-          class="preset-button"
-          data-preset="presentation"
-          data-i18n="presetPresentation"
-        >
-          Презентационное расширение
-        </button>
+<section class="simulator-workspace simulator-workspace--restored simulator-workspace--minimal">
+  <aside class="simulator-panel-stack simulator-panel-stack--left">
+    <aside class="orbit-control-card sim-panel-card">
+      <div class="sim-card-heading">
+        <div>
+          <span data-i18n="orbitTitle">Орбита и планета</span>
+          <h2 data-i18n="orbitParametersTitle">Параметры орбиты</h2>
         </div>
       </div>
-    </details>
-
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="orbitTitle">Орбита и планета</span>
-          <span class="fold-hint" data-i18n="orbitHint">Высота, наклонение, скорость и масштаб</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-
-      <label class="field">
-        <span data-i18n="hostBody">Центральное тело</span>
-        <select id="hostBody"></select>
-      </label>
-
-      <label class="slider-field">
+      <div class="sim-card-block">
+        <span class="sim-field-label" data-i18n="hostBody">Центральное тело</span>
+        <div class="option-stack compact-host-options" id="hostBodyOptions" role="group" aria-label="Центральное тело" data-value="earth"></div>
+      </div>
+      <label class="range-control">
         <span data-i18n="altitude">Высота орбиты, км</span>
-        <strong id="altitudeValue">420</strong>
-        <input id="altitudeKm" type="range" min="120" max="6000" step="10" value="420" />
+        <strong><span id="altitudeValue">417</span> км</strong>
+        <input id="altitudeKm" type="range" min="200" max="600" step="1" value="417" />
+        <em><span>200</span><span>600</span></em>
       </label>
-
-      <label class="slider-field">
+      <label class="range-control">
         <span data-i18n="inclination">Наклонение, °</span>
-        <strong id="inclinationValue">51.6</strong>
-        <input id="inclinationDeg" type="range" min="0" max="120" step="0.1" value="51.6" />
+        <strong><span id="inclinationValue">51.64</span>°</strong>
+        <input id="inclinationDeg" type="range" min="0" max="90" step="0.01" value="51.64" />
+        <em><span>0°</span><span>90°</span></em>
       </label>
-
-      <label class="slider-field">
+      <label class="range-control">
         <span data-i18n="timeScale">Скорость времени</span>
-        <strong id="timeScaleValue">1.8x</strong>
-        <input id="timeScale" type="range" min="0.1" max="50" step="0.1" value="1.8" />
+        <strong id="timeScaleValue">1x</strong>
+        <input id="timeScale" type="range" min="0.1" max="50" step="0.1" value="1" />
+        <em><span>0.1x</span><span>50x</span></em>
       </label>
-
-      <label class="slider-field">
-        <span data-i18n="planetScale">Масштаб планеты</span>
-        <strong id="planetScaleValue">1.0x</strong>
-        <input id="planetScale" type="range" min="0.6" max="2.8" step="0.05" value="1" />
-      </label>
-      </div>
-    </details>
-
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="attitudeTitle">Ориентация станции</span>
-          <span class="fold-hint" data-i18n="attitudeHint">Yaw / Pitch / Roll и солнечные панели</span>
+      <div class="orbit-summary orbit-summary--grid">
+        <div>
+          <span data-i18n="telemetryPeriod">Период орбиты</span>
+          <strong id="orbitPeriodValue">92.68 мин</strong>
         </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-
-      <label class="slider-field">
-        <span data-i18n="yaw">Рыскание Y, °</span>
-        <strong id="yawValue">0</strong>
-        <input id="yawDeg" type="range" min="-180" max="180" value="0" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="pitch">Тангаж X, °</span>
-        <strong id="pitchValue">0</strong>
-        <input id="pitchDeg" type="range" min="-90" max="90" value="0" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="roll">Крен Z, °</span>
-        <strong id="rollValue">0</strong>
-        <input id="rollDeg" type="range" min="-180" max="180" value="0" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="solarSpread">Угол солнечных панелей, °</span>
-        <strong id="solarSpreadValue">28</strong>
-        <input id="solarSpread" type="range" min="0" max="85" value="28" />
-      </label>
-      </div>
-    </details>
-
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="moduleTitle">Модули станции</span>
-          <span class="fold-hint" data-i18n="moduleHint">Включение и скрытие секций станции</span>
+        <div>
+          <span data-i18n="telemetryVelocity">Орбитальная скорость</span>
+          <strong id="orbitalVelocityValue">7.67 км/с</strong>
         </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-        <div class="check-grid">
+      </div>
+    </aside>
+
+    <article class="sim-panel-card sim-log-card">
+      <div class="sim-card-heading">
+        <div>
+          <span data-i18n="logTitle">Журнал событий</span>
+          <h2 data-i18n="logHint">Последние действия станции и пользователя</h2>
+        </div>
+      </div>
+      <div id="eventLog" class="sim-event-log"></div>
+    </article>
+  </aside>
+
+  <article class="simulator-scene-card">
+    <div class="scene-toolbar">
+      <div class="scene-toolbar__spacer" aria-hidden="true"></div>
+      <div class="scene-toolbar__meta">
+        <div class="scene-mini-stat scene-mini-stat--floating">
+          <span data-i18n="fpsLabel">FPS</span>
+          <strong id="fpsValue">60</strong>
+        </div>
+      </div>
+      <div class="scene-toolbar__actions">
+        <button type="button" class="template-icon-button" id="cameraHome" data-i18n-aria-label="cameraReset" aria-label="Сбросить камеру"><i data-lucide="camera"></i></button>
+        <button type="button" class="template-icon-button" id="dockingModeToggle" data-i18n-aria-label="dockingMode" aria-label="Режим стыковки"><i data-lucide="mouse-pointer-click"></i></button>
+        <button type="button" class="template-icon-button" data-scene-action="fullscreen" data-i18n-aria-label="fullscreen" aria-label="Полный экран"><i data-lucide="maximize"></i></button>
+      </div>
+    </div>
+
+    <div class="scene-status-row">
+      <div class="scene-status-chip">
+        <div>
+          <span data-i18n="sceneLabel">Симуляция</span>
+          <strong id="sceneStatus">Орбита вокруг тела: Земля</strong>
+        </div>
+      </div>
+    </div>
+
+    <div id="sceneMount" class="scene-mount" aria-label="3D-сцена симулятора"></div>
+
+    <section class="sim-command-strip">
+      <article class="command-card command-card--time">
+        <div class="simulation-time-head">
+          <div>
+            <span data-i18n="simulationTimeTitle">Время симуляции</span>
+            <strong id="missionDate">2024-05-20</strong>
+          </div>
+          <div class="simulation-time-meta">
+            <div class="time-meta-pill time-meta-pill--utc">
+              <span>UTC</span>
+              <strong id="missionClock">12:45:32</strong>
+            </div>
+            <div class="time-meta-pill time-meta-pill--elapsed">
+              <span data-i18n="missionClock">T+</span>
+              <strong id="missionElapsedValue">00:00:00</strong>
+            </div>
+            <div class="time-meta-pill time-meta-pill--scale">
+              <span data-i18n="timeScale">Скорость времени</span>
+              <strong id="timeScaleReadout">1.0x</strong>
+            </div>
+          </div>
+        </div>
+        <div class="time-track"><span></span></div>
+        <div class="transport-row">
+          <button type="button" id="transportReset" class="template-icon-button" data-i18n-aria-label="transportReset" aria-label="В начало"><i data-lucide="skip-back"></i></button>
+          <button type="button" id="transportStepBack" class="template-icon-button" data-i18n-aria-label="transportStepBack" aria-label="Шаг назад"><i data-lucide="step-back"></i></button>
+          <button type="button" id="transportPlayPause" class="template-icon-button is-primary" aria-label="Пауза"><i data-lucide="pause"></i></button>
+          <button type="button" id="transportStepForward" class="template-icon-button" data-i18n-aria-label="transportStepForward" aria-label="Шаг вперёд"><i data-lucide="step-forward"></i></button>
+        </div>
+      </article>
+
+      <article class="command-card command-card--telemetry">
+        <span data-i18n="telemetryTitle">Телеметрия</span>
+        <div class="view-metrics telemetry-metrics-grid">
+          <div>
+            <span data-i18n="telemetryPeriod">Период орбиты</span>
+            <strong id="orbitPeriodValueMirror">92.68 мин</strong>
+          </div>
+          <div>
+            <span data-i18n="telemetryVelocity">Орбитальная скорость</span>
+            <strong id="orbitalVelocityValueMirror">7.67 км/с</strong>
+          </div>
+          <div>
+            <span data-i18n="telemetryLinks">Активные радиолинии</span>
+            <strong id="activeLinksValue">0 / 8</strong>
+          </div>
+          <div>
+            <span data-i18n="telemetryThroughput">Пропускная способность</span>
+            <strong id="throughputValue">0 Мбит/с</strong>
+          </div>
+          <div>
+            <span data-i18n="telemetryModules">Модулей в составе</span>
+            <strong id="moduleCountValue">6</strong>
+          </div>
+          <div>
+            <span data-i18n="telemetryDocking">Состояние стыковки</span>
+            <strong id="dockingStateValue">IDLE</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+  </article>
+
+  <aside class="simulator-panel-stack simulator-panel-stack--right">
+    <article class="sim-panel-card sim-docking-card">
+      <div class="sim-card-heading">
+        <div>
+          <span data-i18n="dockingTitle">Стыковка и расширение</span>
+          <h2 data-i18n="dockingHint">Выбор модуля, порта и скорости сближения</h2>
+        </div>
+      </div>
+      <div class="sim-field-block">
+        <span class="sim-field-label" data-i18n="moduleType">Тип нового модуля</span>
+        <div class="option-stack dock-option-grid" id="dockModuleTypeOptions" data-value="science">
+          <button type="button" data-value="science"><span data-i18n="dockScience">Научный модуль</span></button>
+          <button type="button" data-value="habitat"><span data-i18n="dockHabitat">Жилой модуль</span></button>
+          <button type="button" data-value="cargo"><span data-i18n="dockCargo">Грузовой модуль</span></button>
+          <button type="button" data-value="power"><span data-i18n="dockPower">Солнечная ферма</span></button>
+          <button type="button" data-value="relay"><span data-i18n="dockRelay">Антенный модуль</span></button>
+          <button type="button" data-value="node"><span data-i18n="dockNode">Узловой модуль</span></button>
+        </div>
+      </div>
+      <div class="sim-field-block">
+        <span class="sim-field-label" data-i18n="dockPort">Узел стыковки</span>
+        <div class="option-stack dock-option-grid dock-option-grid--ports" id="dockPortOptions" data-value="forward">
+          <button type="button" data-value="forward"><span data-i18n="portForward">Передний</span></button>
+          <button type="button" data-value="aft"><span data-i18n="portAft">Задний</span></button>
+          <button type="button" data-value="zenith"><span data-i18n="portZenith">Зенит</span></button>
+          <button type="button" data-value="nadir"><span data-i18n="portNadir">Надир</span></button>
+          <button type="button" data-value="starboard"><span data-i18n="portStarboard">Правый борт</span></button>
+          <button type="button" data-value="port"><span data-i18n="portLeft">Левый борт</span></button>
+        </div>
+      </div>
+      <label class="range-control range-control--compact">
+        <span data-i18n="approachSpeed">Скорость сближения</span>
+        <strong id="approachSpeedValue">1.4x</strong>
+        <input id="approachSpeed" type="range" min="0.3" max="4" step="0.1" value="1.4" />
+      </label>
+      <div class="sim-button-row">
+        <button type="button" id="launchDocking" class="template-secondary-button"><span data-i18n="launchDocking">Запустить стыковку</span></button>
+        <button type="button" id="resetStation" class="template-secondary-button"><span data-i18n="resetStation">Сбросить станцию</span></button>
+      </div>
+    </article>
+
+    <article class="sim-panel-card sim-modules-card">
+      <div class="sim-card-heading">
+        <div>
+          <span data-i18n="moduleTitle">Модули станции</span>
+          <h2 data-i18n="moduleHint">Включение и скрытие секций станции</h2>
+        </div>
+      </div>
+      <div class="module-toggle-grid">
         <label><input type="checkbox" id="showCore" checked /> <span data-i18n="moduleCore">Базовый</span></label>
         <label><input type="checkbox" id="showLab" checked /> <span data-i18n="moduleLab">Лабораторный</span></label>
         <label><input type="checkbox" id="showHab" checked /> <span data-i18n="moduleHab">Жилой</span></label>
         <label><input type="checkbox" id="showPower" checked /> <span data-i18n="modulePower">Энергетический</span></label>
         <label><input type="checkbox" id="showDock" checked /> <span data-i18n="moduleDock">Узловой</span></label>
         <label><input type="checkbox" id="showAntenna" checked /> <span data-i18n="moduleAntenna">Связь</span></label>
+      </div>
+      <label class="range-control range-control--compact">
+        <span data-i18n="solarSpread">Угол солнечных панелей, °</span>
+        <strong><span id="solarSpreadValue">28</span>°</strong>
+        <input id="solarSpread" type="range" min="0" max="85" value="28" />
+      </label>
+    </article>
+
+    <article class="sim-panel-card sim-health-card">
+      <div class="sim-card-heading">
+        <div>
+          <span data-i18n="missionHealthTitle">Инженерная оценка</span>
+          <h2 data-i18n="missionHealthHint">Сводная устойчивость конфигурации</h2>
+        </div>
+        <div class="engineer-risk-chip">
+          <span data-i18n="riskIndexTitle">Риск</span>
+          <strong id="engineerRiskValue">--</strong>
         </div>
       </div>
-    </details>
-  </section>
-
-  <section class="scene-column">
-    <div class="scene-banner">
-      <div>
-        <p class="banner-label" data-i18n="sceneLabel">3D-визуализация</p>
-        <p class="banner-value" id="sceneStatus">Circular orbit simulation ready</p>
+      <div class="engineer-score-grid">
+        <article class="engineer-score-card"><span data-i18n="engineerPowerLabel">Power</span><strong id="engineerPowerScore">--</strong></article>
+        <article class="engineer-score-card"><span data-i18n="engineerThermalLabel">Thermal</span><strong id="engineerThermalScore">--</strong></article>
+        <article class="engineer-score-card"><span data-i18n="engineerCommsLabel">Comms</span><strong id="engineerCommsScore">--</strong></article>
+        <article class="engineer-score-card"><span data-i18n="engineerDockingLabel">Docking</span><strong id="engineerDockingScore">--</strong></article>
       </div>
-      <div class="mini-stats">
-        <article>
-          <span data-i18n="fpsLabel">FPS</span>
-          <strong id="fpsValue">60</strong>
-        </article>
-        <article>
-          <span data-i18n="missionClock">T+</span>
-          <strong id="missionClock">00:00</strong>
-        </article>
+      <p class="engineer-recommendation" id="engineerRecommendation" data-i18n="engineerRecommendationIdle">Live mission assessment will appear here.</p>
+      <div class="sim-button-row engineer-actions">
+        <button type="button" id="engineerNominal" class="template-secondary-button"><span data-i18n="engineerNominal">Штатный</span></button>
+        <button type="button" id="engineerPower" class="template-secondary-button"><span data-i18n="engineerPower">Энергосбережение</span></button>
+        <button type="button" id="engineerComms" class="template-secondary-button"><span data-i18n="engineerComms">Приоритет связи</span></button>
       </div>
-    </div>
-    <div id="sceneMount" class="scene-mount" aria-label="3D-сцена"></div>
-    <noscript>Для работы 3D-сцены нужен JavaScript.</noscript>
-  </section>
+    </article>
 
-  <section class="hud-panel hud-panel--right" aria-label="Телеметрия и сценарии">
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="dockingTitle">Стыковка и расширение</span>
-          <span class="fold-hint" data-i18n="dockingHint">Выбор модуля, порта и скорости сближения</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-
-      <label class="field">
-        <span data-i18n="moduleType">Тип нового модуля</span>
-        <select id="dockModuleType">
-          <option value="science" data-i18n="dockScience">Научный модуль</option>
-          <option value="habitat" data-i18n="dockHabitat">Жилой модуль</option>
-          <option value="cargo" data-i18n="dockCargo">Грузовой модуль</option>
-          <option value="power" data-i18n="dockPower">Солнечная ферма</option>
-          <option value="relay" data-i18n="dockRelay">Антенный модуль</option>
-        </select>
-      </label>
-
-      <label class="field">
-        <span data-i18n="dockPort">Узел стыковки</span>
-        <select id="dockPort">
-          <option value="forward" data-i18n="portForward">Передний</option>
-          <option value="aft" data-i18n="portAft">Задний</option>
-          <option value="zenith" data-i18n="portZenith">Зенит</option>
-          <option value="nadir" data-i18n="portNadir">Надир</option>
-          <option value="starboard" data-i18n="portStarboard">Правый борт</option>
-          <option value="port" data-i18n="portLeft">Левый борт</option>
-        </select>
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="approachSpeed">Скорость сближения</span>
-        <strong id="approachSpeedValue">1.4x</strong>
-        <input id="approachSpeed" type="range" min="0.3" max="4" step="0.1" value="1.4" />
-      </label>
-
-      <div class="action-row">
-        <button type="button" class="action-button" id="launchDocking" data-i18n="launchDocking">
-          Запустить стыковку
-        </button>
-        <button
-          type="button"
-          class="action-button action-button--soft"
-          id="resetStation"
-          data-i18n="resetStation"
-        >
-          Сбросить станцию
-        </button>
-      </div>
-      </div>
-    </details>
-
-    <details class="control-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="commsTitle">Межспутниковая связь</span>
-          <span class="fold-hint" data-i18n="commsHint">Ретрансляторы, дальность, мощность и помехи</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-
-      <label class="slider-field">
-        <span data-i18n="relayCount">Число спутников-ретрансляторов</span>
-        <strong id="relayCountValue">8</strong>
-        <input id="relayCount" type="range" min="2" max="18" value="8" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="linkRange">Дальность радиолинии, км</span>
-        <strong id="linkRangeValue">14000</strong>
-        <input id="linkRangeKm" type="range" min="2000" max="30000" step="250" value="14000" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="antennaPower">Мощность антенн, %</span>
-        <strong id="antennaPowerValue">84</strong>
-        <input id="antennaPower" type="range" min="10" max="100" value="84" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="packetRate">Пакетный поток, Мбит/с</span>
-        <strong id="packetRateValue">420</strong>
-        <input id="packetRateMbps" type="range" min="40" max="1200" step="10" value="420" />
-      </label>
-
-      <label class="slider-field">
-        <span data-i18n="interference">Помехи / радиационная буря, %</span>
-        <strong id="interferenceValue">12</strong>
-        <input id="interferencePct" type="range" min="0" max="85" value="12" />
-      </label>
-
-      <div class="check-grid check-grid--single">
-        <label>
-          <input type="checkbox" id="showLinks" checked />
+    <article class="sim-panel-card sim-advanced-card">
+      <details class="sim-accordion" open>
+        <summary>
+          <span data-i18n="commsTitle">Межспутниковая связь</span>
+        </summary>
+        <label class="range-control range-control--compact">
+          <span data-i18n="relayCount">Число спутников-ретрансляторов</span>
+          <strong id="relayCountValue">8</strong>
+          <input id="relayCount" type="range" min="2" max="18" value="8" />
+        </label>
+        <label class="range-control range-control--compact">
+          <span data-i18n="linkRange">Дальность радиолинии, км</span>
+          <strong id="linkRangeValue">14000</strong>
+          <input id="linkRangeKm" type="range" min="2000" max="30000" step="250" value="14000" />
+        </label>
+        <label class="range-control range-control--compact">
+          <span data-i18n="antennaPower">Мощность антенн, %</span>
+          <strong id="antennaPowerValue">84</strong>
+          <input id="antennaPower" type="range" min="10" max="100" value="84" />
+        </label>
+        <label class="range-control range-control--compact">
+          <span data-i18n="packetRate">Пакетный поток, Мбит/с</span>
+          <strong id="packetRateValue">420</strong>
+          <input id="packetRateMbps" type="range" min="40" max="1200" step="10" value="420" />
+        </label>
+        <label class="range-control range-control--compact">
+          <span data-i18n="interference">Помехи / радиационная буря, %</span>
+          <strong id="interferenceValue">12</strong>
+          <input id="interferencePct" type="range" min="0" max="85" value="12" />
+        </label>
+        <label class="sim-toggle-line">
+          <input id="showLinks" type="checkbox" checked />
           <span data-i18n="showLinks">Показывать радиолинии</span>
         </label>
-        <label>
-          <input type="checkbox" id="showOrbitRails" checked />
+        <label class="sim-toggle-line">
+          <input id="showOrbitRails" type="checkbox" checked />
           <span data-i18n="showOrbitRails">Показывать орбитальные траектории</span>
         </label>
-      </div>
-      </div>
-    </details>
+      </details>
 
-    <details class="control-block telemetry-card control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="telemetryTitle">Телеметрия</span>
-          <span class="fold-hint" data-i18n="telemetryHint">Период, скорость, каналы связи и состояние стыковки</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-        <div class="telemetry-grid">
-        <article>
-          <span data-i18n="telemetryPeriod">Период орбиты</span>
-          <strong id="orbitPeriodValue">92.8 мин</strong>
-        </article>
-        <article>
-          <span data-i18n="telemetryVelocity">Орбитальная скорость</span>
-          <strong id="orbitalVelocityValue">7.67 км/с</strong>
-        </article>
-        <article>
-          <span data-i18n="telemetryLinks">Активные радиолинии</span>
-          <strong id="activeLinksValue">0 / 8</strong>
-        </article>
-        <article>
-          <span data-i18n="telemetryThroughput">Пропускная способность</span>
-          <strong id="throughputValue">0 Мбит/с</strong>
-        </article>
-        <article>
-          <span data-i18n="telemetryModules">Модулей в составе</span>
-          <strong id="moduleCountValue">6</strong>
-        </article>
-        <article>
-          <span data-i18n="telemetryDocking">Состояние стыковки</span>
-          <strong id="dockingStateValue">IDLE</strong>
-        </article>
-        </div>
-      </div>
-    </details>
+      <details class="sim-accordion">
+        <summary>
+          <span data-i18n="sceneSettingsMovedTitle">Настройки сцены</span>
+        </summary>
+        <p class="sim-settings-note sim-settings-note--inline" data-i18n="sceneSettingsMovedBody">Параметры планеты, света, orbit rails и свободной камеры перенесены в настройки проекта.</p>
+        <a class="template-secondary-button sim-settings-link" href="/settings" data-i18n="openSettings">Открыть настройки</a>
+      </details>
 
-    <details class="control-block log-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="logTitle">Журнал событий</span>
-          <span class="fold-hint" data-i18n="logHint">Последние действия пользователя и станции</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-        <div class="event-log" id="eventLog" aria-live="polite"></div>
-      </div>
-    </details>
+      <details class="sim-accordion">
+        <summary>
+          <span data-i18n="sourceTitle">Открытые данные</span>
+        </summary>
+        <div id="sourceList" class="sim-source-list"></div>
+      </details>
+    </article>
+  </aside>
 
-    <details class="control-block source-block control-fold">
-      <summary>
-        <div class="fold-copy">
-          <span class="fold-title" data-i18n="sourceTitle">Открытые данные</span>
-          <span class="fold-hint" data-i18n="sourceHint">Источники справочных параметров и TLE-контекста</span>
-        </div>
-        <span class="fold-icon" aria-hidden="true"></span>
-      </summary>
-      <div class="fold-body">
-        <div id="sourceList" class="source-list"></div>
-      </div>
-    </details>
-  </section>
-</main>
+</section>
 {% endblock %}
 
 {% block scripts %}
-<script
-  type="module"
-  src="{{ url_for('static', filename='js/digital_twin.js') }}"
-></script>
+<script type="module" src="{{ url_for('static', filename='js/digital_twin.js') }}?v=template11"></script>
 {% endblock %}

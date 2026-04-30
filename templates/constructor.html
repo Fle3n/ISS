@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Конструктор МКС{% endblock %}
+{% block body_class %}constructor-page{% endblock %}
+
+{% block section_kicker %}3D-редактор станции{% endblock %}
+{% block page_title %}Конструктор{% endblock %}
+
+{% block content %}
+<main class="constructor-shell">
+  <section class="constructor-stage" aria-label="3D-конструктор станции">
+    <div class="constructor-stage-head">
+      <div>
+        <p class="constructor-kicker" data-i18n-builder="kicker">3D-редактор станции</p>
+        <h1 data-i18n-builder="title">Конструктор МКС</h1>
+      </div>
+      <div class="constructor-stats" aria-label="Параметры сборки">
+        <article>
+          <span data-i18n-builder="modulesMetric">Модулей</span>
+          <strong id="builderModuleCount">6</strong>
+        </article>
+        <article>
+          <span data-i18n-builder="powerMetric">Запас энергии</span>
+          <strong id="builderPower">100%</strong>
+        </article>
+        <article>
+          <span data-i18n-builder="massMetric">Масса</span>
+          <strong id="builderMass">420 т</strong>
+        </article>
+      </div>
+    </div>
+    <div id="constructorMount" class="constructor-mount" aria-label="3D-сцена конструктора">
+      <div id="builderModuleMenu" class="constructor-module-menu" role="menu" hidden>
+        <button
+          type="button"
+          class="constructor-module-menu__button"
+          id="builderModuleMenuDelete"
+          aria-label="Удалить модуль"
+          title="Удалить модуль"
+          role="menuitem"
+        >
+          <i data-lucide="trash-2" aria-hidden="true"></i>
+          <svg
+            class="constructor-module-menu__fallback-icon"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 6h18" />
+            <path d="M8 6V4h8v2" />
+            <path d="M19 6l-1 14H6L5 6" />
+            <path d="M10 11v5" />
+            <path d="M14 11v5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <noscript>Для работы конструктора нужен JavaScript.</noscript>
+  </section>
+
+  <aside class="constructor-panel" aria-label="Панель конструктора">
+    <section class="constructor-card constructor-palette-card">
+      <div class="constructor-card-head">
+        <span data-i18n-builder="moduleTitle">Модули станции</span>
+      </div>
+      <div class="constructor-module-palette" id="builderModulePalette">
+        <button type="button" class="constructor-module-card" data-module-type="solar">
+          <span class="constructor-module-preview constructor-module-preview--solar" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleSolar">Солнечная батарея</strong>
+            <small data-i18n-builder="moduleSolarHint">Панели питания</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="science">
+          <span class="constructor-module-preview constructor-module-preview--science" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleScience">Научный модуль</strong>
+            <small data-i18n-builder="moduleScienceHint">Лабораторный блок</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="habitat">
+          <span class="constructor-module-preview constructor-module-preview--habitat" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleHabitat">Жилой модуль</strong>
+            <small data-i18n-builder="moduleHabitatHint">Отсек экипажа</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="cargo">
+          <span class="constructor-module-preview constructor-module-preview--cargo" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleCargo">Грузовой модуль</strong>
+            <small data-i18n-builder="moduleCargoHint">Складской отсек</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="antenna">
+          <span class="constructor-module-preview constructor-module-preview--antenna" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleAntenna">Антенный узел</strong>
+            <small data-i18n-builder="moduleAntennaHint">Связь и навигация</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="node">
+          <span class="constructor-module-preview constructor-module-preview--node" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleNode">Узловой модуль</strong>
+            <small data-i18n-builder="moduleNodeHint">Разветвление портов</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="airlock">
+          <span class="constructor-module-preview constructor-module-preview--airlock" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleAirlock">Шлюзовой модуль</strong>
+            <small data-i18n-builder="moduleAirlockHint">Выходы в открытый космос</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="radiator">
+          <span class="constructor-module-preview constructor-module-preview--radiator" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleRadiator">Радиаторный блок</strong>
+            <small data-i18n-builder="moduleRadiatorHint">Тепловой контур</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="propulsion">
+          <span class="constructor-module-preview constructor-module-preview--propulsion" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="modulePropulsion">Двигательный модуль</strong>
+            <small data-i18n-builder="modulePropulsionHint">Коррекция орбиты</small>
+          </span>
+        </button>
+        <button type="button" class="constructor-module-card" data-module-type="cupola">
+          <span class="constructor-module-preview constructor-module-preview--cupola" aria-hidden="true"></span>
+          <span class="constructor-module-copy">
+            <strong data-i18n-builder="moduleCupola">Обзорный купол</strong>
+            <small data-i18n-builder="moduleCupolaHint">Панорамные окна</small>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <input id="builderSolarAngle" type="hidden" value="28" />
+    <input id="builderScale" type="hidden" value="1" />
+    <span id="builderSolarAngleValue" hidden>28</span>
+    <span id="builderScaleValue" hidden>1.0x</span>
+
+    <section class="constructor-card constructor-actions">
+      <button type="button" class="constructor-action constructor-action--soft" id="builderReset" data-i18n-builder="resetStation">Сбросить</button>
+    </section>
+
+    <section class="constructor-card">
+      <div class="constructor-card-head">
+        <span data-i18n-builder="logTitle">Журнал сборки</span>
+      </div>
+      <div class="constructor-log" id="builderLog" aria-live="polite"></div>
+    </section>
+  </aside>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script
+  type="module"
+  src="{{ url_for('static', filename='js/station_constructor.js') }}?v=17"
+></script>
+{% endblock %}

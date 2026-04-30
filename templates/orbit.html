@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Орбита · {{ mission_title }}{% endblock %}
+{% block body_class %}template-orbit-page{% endblock %}
+{% block section_kicker %}орбитальная модель{% endblock %}
+{% block page_title %}Орбита{% endblock %}
+
+{% block content %}
+<section class="orbit-page-grid">
+  <aside class="template-panel orbit-params">
+    <h2>Параметры орбиты</h2>
+    <dl>
+      <div><dt>Высота орбиты</dt><dd>417 км</dd></div>
+      <div><dt>Наклонение</dt><dd>51.64°</dd></div>
+      <div><dt>Эксцентриситет</dt><dd>0.000167</dd></div>
+      <div><dt>Аргумент перигея</dt><dd>132.3°</dd></div>
+      <div><dt>Период обращения</dt><dd>92.68 мин</dd></div>
+    </dl>
+    <button type="button" class="template-secondary-button">Сбросить параметры</button>
+  </aside>
+
+  <article class="template-panel orbit-visual-card">
+    <div class="panel-tabs">
+      <button class="is-active">3D вид</button>
+      <button>2D проекция</button>
+      <button>Таблица</button>
+    </div>
+    <div class="orbit-diagram" aria-hidden="true">
+      <div class="orbit-path orbit-path--cyan"></div>
+      <div class="orbit-path orbit-path--pink"></div>
+      <div class="orbit-earth"></div>
+      <span class="orbit-point orbit-point--a"></span>
+      <span class="orbit-point orbit-point--b"></span>
+      <div class="orbit-label orbit-label--a"><span>Апогей</span><strong>421.6 км</strong></div>
+      <div class="orbit-label orbit-label--b"><span>Перигей</span><strong>412.1 км</strong></div>
+    </div>
+    <div class="orbit-stat-row">
+      <article><span>Апогей</span><strong>421.6 км</strong></article>
+      <article><span>Перигей</span><strong>412.1 км</strong></article>
+      <article><span>Скорость</span><strong>7.67 км/с</strong></article>
+      <article><span>Период</span><strong>92.68 мин</strong></article>
+    </div>
+  </article>
+</section>
+{% endblock %}

@@ -7,13 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Unbounded:wght@500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/interface_fix.css') }}?v=55" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template_dashboard.css') }}?v=15" />
     <script type="importmap">
       {
         "imports": {
@@ -23,33 +22,57 @@
       }
     </script>
     {% block head_extra %}{% endblock %}
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   </head>
-  <body class="{% block body_class %}content-page{% endblock %}">
-    <header class="top-nav-wrap">
-      <a class="brand-mark" href="{{ url_for('index') }}">
-        <span class="brand-orb">МКС</span>
-        <span class="brand-label">МКС · Digital Twin</span>
-      </a>
-      <nav class="top-nav" aria-label="Главная навигация">
-        {% for item in site_nav %}
-        <a
-          class="top-nav-link {% if active_page == item.key %}is-active{% endif %}"
-          href="{{ url_for(item.endpoint) }}"
-          {% if active_page == item.key %}aria-current="page"{% endif %}
-        >
-          <span>{{ item.eyebrow }}</span>
-          <strong>{{ item.label }}</strong>
+  <body class="template-body {% block body_class %}dashboard-page{% endblock %}">
+    <div class="template-shell">
+      <aside class="template-sidebar" aria-label="Навигация">
+        <a class="template-brand" href="{{ url_for('index') }}">
+          <span class="template-brand__glyph" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </span>
+          <span>
+            <strong data-brand-title>цифровой<br />прорыв</strong>
+            <small data-brand-subtitle>цифровой двойник мкс</small>
+          </span>
         </a>
-        {% endfor %}
-      </nav>
-    </header>
+        <nav class="template-nav">
+          {% for item in site_nav %}
+          <a
+            class="template-nav__link {% if active_page == item.key %}is-active{% endif %}"
+            href="{{ url_for(item.endpoint) }}"
+            data-nav-key="{{ item.key }}"
+            {% if active_page == item.key %}aria-current="page"{% endif %}
+          >
+            <i data-lucide="{{ item.icon }}"></i>
+            <span>{{ item.label }}</span>
+          </a>
+          {% endfor %}
+        </nav>
+      </aside>
 
-    {% block content %}{% endblock %}
-
-    <script
-      type="module"
-      src="{{ url_for('static', filename='js/ui_animations.js') }}"
-    ></script>
+      <main class="template-main">
+        <header class="template-topbar">
+          <div>
+            <p id="pageKicker">{% block section_kicker %}МКС digital twin{% endblock %}</p>
+            <h1 id="pageTitle">{% block page_title %}{{ mission_title }}{% endblock %}</h1>
+          </div>
+          <div class="template-topbar__actions">
+            <span class="template-utc">12:45:32 UTC</span>
+            <button type="button" class="template-icon-button" data-shell-action="notifications" aria-label="Уведомления"><i data-lucide="bell"></i></button>
+            <button type="button" class="template-icon-button" data-shell-action="help" aria-label="Справка"><i data-lucide="help-circle"></i></button>
+            <button type="button" class="template-icon-button template-language-button" id="languageToggle" aria-label="Переключить язык">
+              <i data-lucide="languages"></i>
+              <span data-lang-option="ru">RU</span>
+              <span data-lang-option="en">EN</span>
+            </button>
+          </div>
+        </header>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='js/ui_animations.js') }}?v=template6"></script>
+    <script type="module" src="{{ url_for('static', filename='js/dashboard_pages.js') }}?v=6"></script>
     {% block scripts %}{% endblock %}
   </body>
 </html>

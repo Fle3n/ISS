@@ -1,0 +1,631 @@
+body.simulator-hud-page {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.simulator-hud-page .top-nav-wrap {
+  display: none;
+}
+
+.simulator-hud-page .mission-shell {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+  background: #000;
+}
+
+.simulator-hud-page .scene-column {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.simulator-hud-page .scene-mount {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: #000;
+}
+
+.simulator-hud-page .scene-mount canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.simulator-hud-page .hud-panel {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  z-index: 5;
+  width: clamp(280px, 20vw, 404px);
+  max-height: none;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  contain: none !important;
+}
+
+.simulator-hud-page .hud-panel--left {
+  left: 24px;
+}
+
+.simulator-hud-page .hud-panel--right {
+  right: 24px;
+  padding-bottom: 150px;
+  overflow-y: auto;
+}
+
+.simulator-hud-page .mission-header {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.simulator-hud-page .mission-header h1 {
+  max-width: 330px;
+  margin: 8px 0 18px;
+  color: #f8fafc;
+  font-size: clamp(22px, 1.7vw, 30px);
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+/* Recreated transparent HUD styles to fix the truncation */
+.simulator-hud-page .control-block {
+  background: rgba(10, 15, 30, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 243, 255, 0.15);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 16px;
+  color: #f8fafc;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.simulator-hud-page .fold-title {
+  color: #00f3ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.simulator-hud-page .fold-hint {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.simulator-hud-page .scene-banner {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(10, 15, 30, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 243, 255, 0.15);
+  border-radius: 30px;
+  padding: 12px 32px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.simulator-hud-page .banner-label {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+  letter-spacing: 1px;
+}
+
+.simulator-hud-page .banner-value {
+  color: #00f3ff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.simulator-hud-page .mini-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.simulator-hud-page .mini-stats article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simulator-hud-page .mini-stats span {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.simulator-hud-page .mini-stats strong {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.simulator-hud-page .pill-button,
+.simulator-hud-page .preset-button,
+.simulator-hud-page .action-button {
+  background: rgba(0, 243, 255, 0.08);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  color: #00f3ff;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.simulator-hud-page .pill-button:hover,
+.simulator-hud-page .preset-button:hover,
+.simulator-hud-page .action-button:hover {
+  background: rgba(0, 243, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.simulator-hud-page select,
+.simulator-hud-page input[type="range"] {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.simulator-hud-page .slider-field {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.simulator-hud-page .slider-field strong {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #00f3ff;
+  font-size: 0.85rem;
+}
+
+.simulator-hud-page .check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.simulator-hud-page .telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.simulator-hud-page .telemetry-grid article {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 4px;
+}
+
+.simulator-hud-page .telemetry-grid span {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.simulator-hud-page .telemetry-grid strong {
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.simulator-hud-page .event-log {
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #a5b4fc;
+}
+
+.simulator-hud-page .event-row {
+  margin-bottom: 4px;
+  border-left: 2px solid #00f3ff;
+  padding-left: 8px;
+  background: rgba(0,243,255,0.05);
+}
+
+.simulator-hud-page .source-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.simulator-hud-page .source-link {
+  display: flex;
+  flex-direction: column;
+  color: #00f3ff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  background: rgba(0,0,0,0.3);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.simulator-hud-page .source-link span {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+/* Restored reference HUD positioning */
+.simulator-hud-page .hud-panel {
+  top: 18px;
+  bottom: 18px;
+  width: clamp(300px, 19.8vw, 404px);
+}
+
+.simulator-hud-page .header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.simulator-hud-page .header-actions .pill-button {
+  min-height: 42px;
+}
+
+.simulator-hud-page .targeting-card {
+  position: relative;
+  min-height: 188px;
+}
+
+.simulator-hud-page .target-title {
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.simulator-hud-page .target-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.simulator-hud-page .target-grid .preset-button {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.simulator-hud-page .sim-modules {
+  position: fixed;
+  top: 240px;
+  right: 24px;
+  width: clamp(300px, 19.8vw, 404px);
+  min-height: 146px;
+  z-index: 9;
+}
+
+.simulator-hud-page .sim-docking {
+  margin-top: 182px;
+}
+
+.simulator-hud-page .sim-comms {
+  max-height: 220px;
+  overflow: hidden;
+}
+
+.simulator-hud-page .sim-log {
+  position: fixed;
+  left: 24px;
+  bottom: 18px;
+  width: clamp(280px, 19vw, 320px);
+  min-height: 124px;
+  z-index: 8;
+}
+
+.simulator-hud-page .sim-source {
+  position: fixed;
+  right: 24px;
+  bottom: 18px;
+  width: clamp(300px, 19.8vw, 404px);
+  max-height: 152px;
+  z-index: 8;
+}
+
+.simulator-hud-page .telemetry-card {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: min(806px, calc(100vw - 760px));
+  min-width: 420px;
+  min-height: 130px;
+  z-index: 8;
+}
+
+.simulator-hud-page .telemetry-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 18px;
+}
+
+.simulator-hud-page .telemetry-grid article {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 44px;
+}
+
+.simulator-hud-page .event-log {
+  max-height: 92px;
+}
+
+.simulator-hud-page .source-list {
+  max-height: 100px;
+  overflow: auto;
+}
+
+@media (max-width: 1400px) {
+  .simulator-hud-page .hud-panel {
+    width: 280px;
+  }
+
+  .simulator-hud-page .sim-modules,
+  .simulator-hud-page .sim-source {
+    width: 280px;
+  }
+
+  .simulator-hud-page .telemetry-card {
+    width: min(680px, calc(100vw - 640px));
+  }
+}
+
+@media (max-width: 1200px) {
+  .simulator-hud-page .scene-banner {
+    left: calc(50% + 8px);
+    width: min(420px, calc(100vw - 620px));
+    min-width: 300px;
+    padding: 10px 22px;
+    gap: 18px;
+  }
+
+  .simulator-hud-page .scene-banner .banner-value {
+    font-size: 0.92rem;
+    line-height: 1.05;
+  }
+
+  .simulator-hud-page .mini-stats {
+    gap: 14px;
+  }
+
+  .simulator-hud-page .sim-log,
+  .simulator-hud-page .sim-source,
+  .simulator-hud-page .telemetry-card {
+    position: static;
+    width: auto;
+    min-width: 0;
+    transform: none;
+  }
+
+  .simulator-hud-page .hud-panel--left,
+  .simulator-hud-page .hud-panel--right {
+    padding-bottom: 0;
+  }
+
+  .simulator-hud-page .sim-comms {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .simulator-hud-page .telemetry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  body.simulator-hud-page {
+    overflow: auto;
+  }
+
+  .simulator-hud-page .mission-shell {
+    position: relative;
+    min-height: 100vh;
+    padding: 16px;
+    overflow: auto;
+  }
+
+  .simulator-hud-page .scene-column {
+    position: relative;
+    height: 56vh;
+    min-height: 420px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .simulator-hud-page .scene-banner,
+  .simulator-hud-page .hud-panel,
+  .simulator-hud-page .sim-modules,
+  .simulator-hud-page .sim-log,
+  .simulator-hud-page .sim-source,
+  .simulator-hud-page .telemetry-card {
+    position: static;
+    width: auto;
+    min-width: 0;
+    transform: none;
+  }
+
+  .simulator-hud-page .sim-docking {
+    margin-top: 0;
+  }
+
+  .simulator-hud-page .hud-panel--left,
+  .simulator-hud-page .hud-panel--right {
+    left: auto;
+    right: auto;
+    padding-bottom: 0;
+  }
+
+  .simulator-hud-page .telemetry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .simulator-hud-page .telemetry-grid,
+  .simulator-hud-page .check-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .simulator-hud-page .mission-header h1 {
+    max-width: none;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  body.simulator-hud-page {
+    overflow: auto;
+  }
+
+  .simulator-hud-page .mission-shell {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    min-height: 100vh;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    overflow: visible;
+  }
+
+  .simulator-hud-page .scene-column {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: min(62vh, 760px);
+    min-height: 460px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .simulator-hud-page .scene-column {
+    order: 1;
+  }
+
+  .simulator-hud-page .hud-panel--left {
+    order: 2;
+  }
+
+  .simulator-hud-page .hud-panel--right {
+    order: 3;
+  }
+
+  .simulator-hud-page .scene-banner,
+  .simulator-hud-page .hud-panel,
+  .simulator-hud-page .sim-modules,
+  .simulator-hud-page .sim-log,
+  .simulator-hud-page .sim-source,
+  .simulator-hud-page .telemetry-card {
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    width: auto;
+    min-width: 0;
+    max-height: none;
+    transform: none;
+  }
+
+  .simulator-hud-page .scene-banner {
+    margin: 0 auto;
+    max-width: min(720px, calc(100% - 24px));
+    border-radius: 18px;
+  }
+
+  .simulator-hud-page .hud-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .simulator-hud-page .hud-panel--left,
+  .simulator-hud-page .hud-panel--right {
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
+  .simulator-hud-page .mission-header,
+  .simulator-hud-page .sim-presets,
+  .simulator-hud-page .sim-orbit,
+  .simulator-hud-page .sim-attitude,
+  .simulator-hud-page .targeting-card,
+  .simulator-hud-page .sim-modules,
+  .simulator-hud-page .sim-docking,
+  .simulator-hud-page .sim-comms,
+  .simulator-hud-page .sim-log,
+  .simulator-hud-page .sim-source,
+  .simulator-hud-page .telemetry-card {
+    margin: 0;
+  }
+
+  .simulator-hud-page .mission-header,
+  .simulator-hud-page .telemetry-card {
+    grid-column: 1 / -1;
+  }
+
+  .simulator-hud-page .sim-docking {
+    margin-top: 0;
+  }
+
+  .simulator-hud-page .sim-comms {
+    overflow: visible;
+  }
+
+  .simulator-hud-page .mission-header h1 {
+    max-width: 14ch;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+  }
+}
